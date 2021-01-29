@@ -7,7 +7,9 @@ import os, requests, sys
 length = delta(days = 100)
 today  = date.today()
 
-# Sprints are 100 days long and start on 1/1, 5/1, and 9/1
+# Sprint attributes:
+# - start dates are 1/1, 5/1, and 9/1 (year dosen't matter)
+# - end dates are 100 days after the start date
 sprints = {
     1:{'start':date(today.year, 1, 1), 'end':date(today.year, 1, 1) + length},
     2:{'start':date(today.year, 5, 1), 'end':date(today.year, 5, 1) + length},
@@ -25,8 +27,9 @@ for sprint in sprints:
         print("Day       : {}".format(current.days))
         print("Remaining : {}".format(remaining.days))
 
-        topic = "Sprint {}: Day {}, {} days remaining".format(sprint, current.days, remaining.days)
+        topic = "Sprint {}: Day {} ({} days remaining)".format(sprint, current.days, remaining.days)
 
+        # TODO: Convert this into a function; arg would be the topic
         # Update Slack
         token    = os.getenv('SLACK_AUTH_TOKEN')
         channel  = os.getenv('SLACK_CHANNEL_ID')
