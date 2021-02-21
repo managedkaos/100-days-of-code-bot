@@ -17,7 +17,7 @@ pipeline {
             steps {
                 git(
                         url: 'https://github.com/managedkaos/100-days-of-code-bot.git',
-                        branch: 'main'
+                        branch: "${env.BRANCH_NAME}"
                    )
             }
         }
