@@ -4,6 +4,15 @@ from datetime import date
 from datetime import timedelta as delta
 import os, requests, sys
 
+def Send_message_to_slack(topic):
+    token    = os.getenv('SLACK_AUTH_TOKEN')
+    channel  = os.getenv('SLACK_CHANNEL_ID')
+    url      = 'https://slack.com/api/conversations.setTopic'
+    payload  = {'channel':channel, 'topic': topic}
+    headers  = {'Authorization': "Bearer {}".format(token)}
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text.encode('utf8'))
+
 length = delta(days = 100)
 today  = date.today()
 
@@ -28,22 +37,14 @@ for sprint in sprints:
         print("Remaining : {}".format(remaining.days))
 
         topic = "Sprint {}: Day {} ({} days remaining)".format(sprint, current.days, remaining.days)
-
-        # TODO: Convert this into a function; arg would be the topic
-        # Update Slack
-        token    = os.getenv('SLACK_AUTH_TOKEN')
-        channel  = os.getenv('SLACK_CHANNEL_ID')
-        url      = 'https://slack.com/api/conversations.setTopic'
-        payload  = {'channel':channel, 'topic': topic}
-        headers  = {'Authorization': "Bearer {}".format(token)}
-        response = requests.request("POST", url, headers=headers, data=payload)
-        print(response.text.encode('utf8'))
+        print(topic)
+        Send_message_to_slack(topic)
         sys.exit(0)
-
-print("No sprint in progress")
 
 for sprint in range(1,4):
     if sprints[sprint]['end'] <= today <= sprints[sprint+1]['start']:
         next_sprint = sprints[sprint+1]['start'] - today
-        print("Next sprint starts in {} days".format(next_sprint.days))
+        topic = "No sprint in progress. Next sprint starts in {} days".format(next_sprint.days)
+        print(topic)
+        Send_message_to_slack(topic)
         break
