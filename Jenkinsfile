@@ -6,7 +6,7 @@ pipeline {
         timestamps()
     }
     triggers {
-          cron '@midnight'
+        cron(env.BRANCH_NAME == 'main' ? '@midnight' : '')
     }
     environment {
         SLACK_AUTH_TOKEN  = credentials('SLACK_AUTH_TOKEN')

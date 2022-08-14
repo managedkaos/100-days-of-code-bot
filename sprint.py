@@ -1,15 +1,23 @@
-# pylint: disable=C0114
-# TODO: Convert this into a function XD
+# pylint: disable=C0114,C0206
+'''
+Just some code that calculates the dates for three 100-day sprints
+'''
 from datetime import date
 from datetime import timedelta as delta
-import os, requests, sys
+import os
+import sys
+import requests
 
-def Send_message_to_slack(topic):
+def set_slack_channel_topic(channel_topic):
+    '''
+    A function for setting the topic of a slack channel
+    Input t = the text to use for the topic
+    '''
     token    = os.getenv('SLACK_AUTH_TOKEN')
     channel  = os.getenv('SLACK_CHANNEL_ID')
     url      = 'https://slack.com/api/conversations.setTopic'
-    payload  = {'channel':channel, 'topic': topic}
-    headers  = {'Authorization': "Bearer {}".format(token)}
+    payload  = {'channel':channel, 'topic': channel_topic}
+    headers  = {'Authorization': f"Bearer {token}"}
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text.encode('utf8'))
 
@@ -26,25 +34,25 @@ sprints = {
     4:{'start':date(today.year+1, 1, 1)}
 }
 
-print("Date      : {}".format(today))
+print(f"Date      : {today}")
 
 for sprint in sprints:
     if sprints[sprint]['start'] <= today <= sprints[sprint]['end']:
         current   = today - sprints[sprint]['start'] + delta(days = 1)
         remaining = sprints[sprint]['end'] - today - delta(days = 1)
-        print("Sprint    : {}".format(sprint))
-        print("Day       : {}".format(current.days))
-        print("Remaining : {}".format(remaining.days))
+        print(f"Sprint    : {sprint}")
+        print(f"Day       : {current.days}")
+        print(f"Remaining : {remaining.days}")
 
-        topic = "Sprint {}: Day {} ({} days remaining)".format(sprint, current.days, remaining.days)
-        print(topic)
-        Send_message_to_slack(topic)
+        TOPIC = f"Sprint {sprint}: Day {current.days} ({remaining.days} days remaining)"
+        print(TOPIC)
+        set_slack_channel_topic(TOPIC)
         sys.exit(0)
 
 for sprint in range(1,4):
     if sprints[sprint]['end'] <= today <= sprints[sprint+1]['start']:
         next_sprint = sprints[sprint+1]['start'] - today
-        topic = "No sprint in progress. Next sprint starts in {} days".format(next_sprint.days)
-        print(topic)
-        Send_message_to_slack(topic)
+        TOPIC = f"No sprint in progress. Next sprint starts in {next_sprint.days} days"
+        print(TOPIC)
+        set_slack_channel_topic(TOPIC)
         break
