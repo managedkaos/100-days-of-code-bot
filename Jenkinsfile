@@ -11,6 +11,7 @@ pipeline {
     environment {
         SLACK_AUTH_TOKEN  = credentials('SLACK_AUTH_TOKEN')
         SLACK_CHANNEL_ID  = credentials('SLACK_CHANNEL_ID')
+        BRANCH_NAME       = 'main'
     }
     stages {
         stage('Checkout') {
