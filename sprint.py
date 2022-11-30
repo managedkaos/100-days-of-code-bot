@@ -19,7 +19,7 @@ def set_slack_channel_topic(channel_topic):
     url = 'https://slack.com/api/conversations.setTopic'
     payload = {'channel': channel, 'topic': channel_topic}
     headers = {'Authorization': f"Bearer {token}"}
-    response = requests.request("POST", url, headers=headers, data=payload)
+    response = requests.request("POST", url, headers=headers, data=payload, timeout=10)
     print(response.text.encode('utf8'))
 
 
