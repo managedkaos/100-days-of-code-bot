@@ -46,7 +46,7 @@ for sprint in sprints:
         print(f"Day       : {current.days}")
         print(f"Remaining : {remaining.days}")
 
-        TOPIC = f"Sprint {sprint}: Day {current.days} ({remaining.days} days remaining)"
+        TOPIC = f"{today} - Sprint {sprint}: Day {current.days} ({remaining.days} days remaining)"
         print(TOPIC)
         set_slack_channel_topic(TOPIC)
         sys.exit(0)
