@@ -54,7 +54,7 @@ for sprint in sprints:
 for sprint in range(1, 4):
     if sprints[sprint]['end'] <= today <= sprints[sprint+1]['start']:
         next_sprint = sprints[sprint+1]['start'] - today
-        TOPIC = f"No sprint in progress. Next sprint starts in {next_sprint.days} days"
+        TOPIC = f"{today} - No sprint in progress. Next sprint starts in {next_sprint.days} days"
         print(TOPIC)
         set_slack_channel_topic(TOPIC)
         break
