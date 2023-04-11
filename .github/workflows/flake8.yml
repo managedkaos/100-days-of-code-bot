@@ -21,6 +21,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8
         pip install --requirement requirements.txt
-    - name: Analysing the code with pylint
+    - name: Analysing the code with flake8
       run: |
         flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
