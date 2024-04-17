@@ -1,16 +1,21 @@
-SCRIPT = sprint.py
+SCRIPT = main.py
 
 all: lint
 	@python3 $(SCRIPT)
 
 test: lint
-	@echo "#TODO: Add test suite :D"
+	pytest --capture=no ./tests
 
 lint: $(SCRIPT)
-	@pylint -E $<
+	flake8 --max-line-length=200 --exit-zero $(SCRIPT)
+	pylint --max-line-length=200 --exit-zero $(SCRIPT)
+	black --check $(SCRIPT)
+
+black:
+	@black $(SCRIPT)
 
 requirements:
-	pip3 install --upgrade pip
+	pip3 install --upgrade pip pytest pylint flake8 black
 	pip3 install --requirement requirements.txt
 
-.PHONY: all test lint
+.PHONY: all test lint black requirements
