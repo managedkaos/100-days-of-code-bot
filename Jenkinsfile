@@ -27,8 +27,7 @@ pipeline {
                 sh('''
                         python3 -m venv local
                         source ./local/bin/activate
-                        pip install --upgrade pip
-                        pip install --requirement requirements.txt
+                        make requirements
                         ''')
             }
         }
@@ -36,7 +35,7 @@ pipeline {
             steps {
                 sh('''
                         source ./local/bin/activate
-                        python ./sprint.py
+                        make all
                         ''')
             }
         }
