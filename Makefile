@@ -1,4 +1,4 @@
-SCRIPT = sprint.py
+SCRIPT = main.py
 
 all: lint
 	@python3 $(SCRIPT)
@@ -7,7 +7,12 @@ test: lint
 	@echo "#TODO: Add test suite :D"
 
 lint: $(SCRIPT)
-	@pylint -E $<
+	flake8 --exit-zero $(SCRIPT)
+	pylint --exit-zero $(SCRIPT)
+	black --check $(SCRIPT)
+
+black:
+	@black $(SCRIPT)
 
 requirements:
 	pip3 install --upgrade pip
