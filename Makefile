@@ -15,7 +15,7 @@ black:
 	@black $(SCRIPT)
 
 requirements:
-	pip3 install --upgrade pip
+	pip3 install --upgrade pip pytest pylint flake8 black
 	pip3 install --requirement requirements.txt
 
-.PHONY: all test lint
+.PHONY: all test lint black requirements
