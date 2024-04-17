@@ -4,11 +4,11 @@ all: lint
 	@python3 $(SCRIPT)
 
 test: lint
-	@echo "#TODO: Add test suite :D"
+	pytest --capture=no ./tests
 
 lint: $(SCRIPT)
-	flake8 --exit-zero $(SCRIPT)
-	pylint --exit-zero $(SCRIPT)
+	flake8 --max-line-length=200 --exit-zero $(SCRIPT)
+	pylint --max-line-length=200 --exit-zero $(SCRIPT)
 	black --check $(SCRIPT)
 
 black:

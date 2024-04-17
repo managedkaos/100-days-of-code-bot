@@ -1,10 +1,16 @@
+"""
+This script updates the topic of a Slack channel with the current sprint information.
+"""
+
 from datetime import date, timedelta
 import os
-import sys
 import requests
 
 
 def calculate_sprint_dates(year):
+    """
+    Returns a dictionary with the start and end dates for each sprint in the year.
+    """
     length = timedelta(days=100)
     return {
         1: {"start": date(year, 1, 1), "end": date(year, 1, 1) + length},
@@ -17,8 +23,13 @@ def calculate_sprint_dates(year):
 
 
 def get_current_sprint(sprints, today):
+    """
+    Returns the current sprint number, the number of days since the sprint started,
+    """
     for sprint_number, sprint_dates in sprints.items():
         start, end = sprint_dates["start"], sprint_dates.get("end", date.max)
+
+        # To fix the 101 bug, use `<` instead of `<=` :)
         if start <= today <= end:
             return (
                 sprint_number,
@@ -29,6 +40,9 @@ def get_current_sprint(sprints, today):
 
 
 def set_slack_channel_topic(channel_topic):
+    """
+    Sets the topic of the Slack channel.
+    """
     token = os.getenv("SLACK_AUTH_TOKEN")
     channel = os.getenv("SLACK_CHANNEL_ID")
     url = "https://slack.com/api/conversations.setTopic"
@@ -39,6 +53,9 @@ def set_slack_channel_topic(channel_topic):
 
 
 def prepare_and_update_topic(today):
+    """
+    Prepares the topic message and updates the Slack channel topic.
+    """
     sprints = calculate_sprint_dates(today.year)
     sprint_number, current_day, days_remaining = get_current_sprint(sprints, today)
 
@@ -54,6 +71,9 @@ def prepare_and_update_topic(today):
 
 
 def main():
+    """
+    Main function.
+    """
     today = date.today()
     print(f"Date: {today}")
     prepare_and_update_topic(today)

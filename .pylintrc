@@ -608,3 +608,6 @@ variable-naming-style=snake_case
 # naming-style. If left empty, variable names will be checked with the set
 # naming style.
 #variable-rgx=
+
+overgeneral-exceptions=builtins.BaseException,
+                       builtins.Exception
