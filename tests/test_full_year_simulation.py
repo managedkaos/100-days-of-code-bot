@@ -7,6 +7,7 @@ import os
 def test_full_year_simulation():
     year = int(os.getenv('TEST_YEAR', '2023'))
     results = []
+    print()
     for day in (date(year, 1, 1) + timedelta(n) for n in range(365)):
         with patch('main.set_slack_channel_topic') as mock_topic:
             prepare_and_update_topic(day)
