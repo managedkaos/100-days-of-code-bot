@@ -4,7 +4,7 @@ all: lint
 	@python3 $(SCRIPT)
 
 test: lint
-	pytest --capture=no ./tests
+	SLACK_CHANNEL_ID=${SLACK_CHANNEL_ID_TEST} pytest --capture=no ./tests
 
 lint: $(SCRIPT)
 	flake8 --max-line-length=200 --exit-zero $(SCRIPT) ./tests
