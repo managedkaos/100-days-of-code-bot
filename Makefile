@@ -7,12 +7,12 @@ test: lint
 	pytest --capture=no ./tests
 
 lint: $(SCRIPT)
-	flake8 --max-line-length=200 --exit-zero $(SCRIPT)
-	pylint --max-line-length=200 --exit-zero $(SCRIPT)
-	black --check $(SCRIPT)
+	flake8 --max-line-length=200 --exit-zero $(SCRIPT) ./tests
+	pylint --max-line-length=200 --exit-zero $(SCRIPT) ./tests
+	black --check $(SCRIPT) ./tests
 
 black:
-	@black $(SCRIPT)
+	@black $(SCRIPT) ./tests
 
 requirements:
 	pip3 install --upgrade pip pytest pylint flake8 black

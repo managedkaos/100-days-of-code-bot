@@ -50,6 +50,7 @@ def set_slack_channel_topic(channel_topic):
     payload = {"channel": channel, "topic": channel_topic}
     response = requests.post(url, headers=headers, data=payload, timeout=10)
     print(response.text)
+    return response.text
 
 
 def prepare_and_update_topic(today):
@@ -67,7 +68,8 @@ def prepare_and_update_topic(today):
                 days_until_next_sprint = (sprints[i + 1]["start"] - today).days
                 topic = f"{today} - No sprint in progress. Next sprint starts in {days_until_next_sprint} days"
                 break
-    set_slack_channel_topic(topic)
+    response = set_slack_channel_topic(topic)
+    return response
 
 
 def main():
@@ -76,7 +78,18 @@ def main():
     """
     today = date.today()
     print(f"Date: {today}")
-    prepare_and_update_topic(today)
+    response = prepare_and_update_topic(today)
+    return response
+
+
+def lambda_handler(event, context):
+    """
+    AWS Lambda handler function.
+    """
+    del event, context  # Unused
+
+    response = main()
+    return {"statusCode": 200, "body": response}
 
 
 if __name__ == "__main__":
