@@ -35,13 +35,14 @@ Resources:
   LambdaFunctionStaging:
     Type: AWS::Lambda::Function
     Properties:
-      Description: The 100 Days of Code API.
+      Description: The 'staging' environment for the 100 Days of Code API.
       FunctionName: !Sub ${AWS::StackName}-100DaysOfCodeAPI
       Runtime: python3.10
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Environment:
         Variables:
+          SKIP_SLACK: True
           ENVIRONMENT: STAGING
           VERSION: 0
           PLATFORM: CloudFormation
@@ -75,7 +76,6 @@ Resources:
               <body>
                   <h1>Welcome!</h1>
                   <h2>This is the <bold>{environment}<bold> environment.</h2>
-                  <p>Get ready to learn more about CI/CD and several amazing tools that simplify testing, building, and deploying software.</p>
                   <p>This welcome page is just the beginning.  Take the next step by deploying the code for the applicaiton.</p>
               </body>
               </html>
@@ -98,6 +98,7 @@ Resources:
       Role: !GetAtt LambdaExecutionRole.Arn
       Environment:
         Variables:
+          SKIP_SLACK: True
           ENVIRONMENT: PRODUCTION
           VERSION: 0
           PLATFORM: CloudFormation
@@ -131,7 +132,6 @@ Resources:
               <body>
                   <h1>Welcome!</h1>
                   <h2>This is the <bold>{environment}<bold> environment.</h2>
-                  <p>Get ready to learn more about CI/CD and several amazing tools that simplify testing, building, and deploying software.</p>
                   <p>This welcome page is just the beginning.  Take the next step by deploying the code for the applicaiton.</p>
               </body>
               </html>
