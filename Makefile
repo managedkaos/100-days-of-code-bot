@@ -4,12 +4,13 @@ all: lint
 	@python3 $(SCRIPT)
 
 test: lint
-	SLACK_CHANNEL_ID=${SLACK_CHANNEL_ID_TEST} pytest --capture=no ./tests
+	SKIP_SLACK=${SLACK_CHANNEL_ID_TEST} pytest --capture=no ./tests
 
 lint: $(SCRIPT)
 	flake8 --max-line-length=200 --exit-zero $(SCRIPT) ./tests
 	pylint --max-line-length=200 --exit-zero $(SCRIPT) ./tests
 	black --check $(SCRIPT) ./tests
+	cfn-lint cloudformation-template.yml
 
 black:
 	@black $(SCRIPT) ./tests

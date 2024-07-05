@@ -39,17 +39,29 @@ def get_current_sprint(sprints, today):
     return None, None, None
 
 
-def set_slack_channel_topic(channel_topic):
+def set_slack_channel_topic(topic):
     """
     Sets the topic of the Slack channel.
     """
+
+    # Check the SKIP_SLACK varible to be present and set to any non-empty value
+    # If there is no need to interact with Slack, just return the topic
+    if os.getenv("SKIP_SLACK") and os.getenv("SKIP_SLACK") != "":
+        print("Slack: skipped")
+        return (
+            f"""{{"ok": true, "channel": {{"topic": {{"value": "{topic}", }}, }} }}"""
+        )
+
+    url = "https://slack.com/api/conversations.setTopic"
     token = os.getenv("SLACK_AUTH_TOKEN")
     channel = os.getenv("SLACK_CHANNEL_ID")
-    url = "https://slack.com/api/conversations.setTopic"
     headers = {"Authorization": f"Bearer {token}"}
-    payload = {"channel": channel, "topic": channel_topic}
+    payload = {"channel": channel, "topic": topic}
+
     response = requests.post(url, headers=headers, data=payload, timeout=10)
-    print(response.text)
+
+    print(f"Slack: {response.text}")
+
     return response.text
 
 
@@ -68,17 +80,11 @@ def prepare_and_update_topic(today):
                 days_until_next_sprint = (sprints[i + 1]["start"] - today).days
                 topic = f"{today} - No sprint in progress. Next sprint starts in {days_until_next_sprint} days"
                 break
+
+    print(f"Topic: {topic}")
+
     response = set_slack_channel_topic(topic)
-    return response
 
-
-def main():
-    """
-    Main function.
-    """
-    today = date.today()
-    print(f"Date: {today}")
-    response = prepare_and_update_topic(today)
     return response
 
 
@@ -88,9 +94,16 @@ def lambda_handler(event, context):
     """
     del event, context  # Unused
 
-    response = main()
+    today = date.today()
+
+    print(f"Date: {today}")
+
+    response = prepare_and_update_topic(today)
+
+    print(response)
+
     return {"statusCode": 200, "body": response}
 
 
 if __name__ == "__main__":
-    main()
+    lambda_handler(None, None)
