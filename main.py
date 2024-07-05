@@ -48,9 +48,12 @@ def set_slack_channel_topic(topic):
     # If there is no need to interact with Slack, just return the topic
     if os.getenv("SKIP_SLACK") and os.getenv("SKIP_SLACK") != "":
         print("Slack: skipped")
-        return (
-            f"""{{"ok": true, "channel": {{"topic": {{"value": "{topic}", }}, }} }}"""
-        )
+        return {
+            "ok": True,
+            "channel": {
+                "topic": {"value": topic},
+            },
+        }
 
     url = "https://slack.com/api/conversations.setTopic"
     token = os.getenv("SLACK_AUTH_TOKEN")
@@ -102,7 +105,13 @@ def lambda_handler(event, context):
 
     print(response)
 
-    return {"statusCode": 200, "body": response}
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json",
+        },
+        "body": response,
+    }
 
 
 if __name__ == "__main__":
