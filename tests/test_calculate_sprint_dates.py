@@ -3,7 +3,7 @@ This file contains the test cases for the function calculate_sprint_dates
 """
 
 from datetime import date, timedelta
-from main import calculate_sprint_dates
+from index import calculate_sprint_dates
 
 
 def test_calculate_sprint_dates():

@@ -3,7 +3,7 @@ Test the lambda_handler function locally.
 """
 
 import json
-from main import lambda_handler
+from index import lambda_handler
 
 
 def test_lambda_handler():
