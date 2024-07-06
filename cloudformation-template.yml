@@ -36,7 +36,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Description: The 'staging' environment for the 100 Days of Code API.
-      FunctionName: !Sub ${AWS::StackName}-100DaysOfCodeAPI
+      FunctionName: !Sub ${AWS::StackName}-staging
       Runtime: python3.10
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
