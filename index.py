@@ -91,7 +91,7 @@ def prepare_and_update_topic(today):
     return response
 
 
-def lambda_handler(event, context):
+def handler(event, context):
     """
     AWS Lambda handler function.
     """
@@ -115,4 +115,4 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    lambda_handler(None, None)
+    handler(None, None)
