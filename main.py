@@ -61,6 +61,7 @@ def prepare_and_update_topic(today):
 
     if sprint_number:
         topic = f"{today} - Sprint {sprint_number}: Day {current_day.days} ({days_remaining.days} days remaining)"
+        print(f"\n\n{topic}\n\n")
     else:
         for i in range(1, 4):
             if sprints[i]["end"] <= today < sprints[i + 1]["start"]:
