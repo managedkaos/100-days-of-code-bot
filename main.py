@@ -17,11 +17,11 @@ def get_sprint_dates(year):
     """
     length = timedelta(days=100)
     return {
-        1: {"start": date(year, 1, 1), "end": date(year, 1, 1) + length},
-        2: {"start": date(year, 5, 1), "end": date(year, 5, 1) + length},
-        3: {"start": date(year, 9, 1), "end": date(year, 9, 1) + length},
+        1: {"start": date(int(year), 1, 1), "end": date(int(year), 1, 1) + length},
+        2: {"start": date(int(year), 5, 1), "end": date(int(year), 5, 1) + length},
+        3: {"start": date(int(year), 9, 1), "end": date(int(year), 9, 1) + length},
         4: {
-            "start": date(year + 1, 1, 1)
+            "start": date(int(year) + 1, 1, 1)
         },  # Only start date for the next year's first sprint
     }
 
@@ -70,7 +70,7 @@ def set_slack_channel_topic(channel_topic):
     """
     token = os.getenv("SLACK_AUTH_TOKEN")
     channel = os.getenv("SLACK_CHANNEL_ID")
-    url = "https://slack.com/api/conversations.setTopic"
+    url = os.getenv("SLACK_API_URL", "https://slack.com/api/conversations.setTopic")
 
     headers = {"Authorization": f"Bearer {token}"}
     payload = {"channel": channel, "topic": channel_topic}
@@ -103,7 +103,7 @@ def lambda_handler(event, context):
     response = main()
 
     if response["ok"]:
-        return {"statusCode": 200, "body": response}
+        return {"statusCode": 200, "body": json.dumps(response)}
 
     return {
         "statusCode": 500,
@@ -115,8 +115,10 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     if os.getenv("TEST_LAMBDA_HANDLER"):
+        print("## Running lambda_handler()")
         output = lambda_handler(None, None)
     else:
+        print("## Running main()")
         output = main()
 
     print(output)

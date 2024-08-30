@@ -11,13 +11,22 @@ def test_get_sprint_dates():
     """
     This test function tests the get_sprint_dates function
     """
-    year = os.getenv("TEST_YEAR", 2024)
+    year = os.getenv("TEST_YEAR", "2024")
 
     expected = {
-        1: {"start": date(year, 1, 1), "end": date(year, 1, 1) + timedelta(days=100)},
-        2: {"start": date(year, 5, 1), "end": date(year, 5, 1) + timedelta(days=100)},
-        3: {"start": date(year, 9, 1), "end": date(year, 9, 1) + timedelta(days=100)},
-        4: {"start": date(year + 1, 1, 1)},
+        1: {
+            "start": date(int(year), 1, 1),
+            "end": date(int(year), 1, 1) + timedelta(days=100),
+        },
+        2: {
+            "start": date(int(year), 5, 1),
+            "end": date(int(year), 5, 1) + timedelta(days=100),
+        },
+        3: {
+            "start": date(int(year), 9, 1),
+            "end": date(int(year), 9, 1) + timedelta(days=100),
+        },
+        4: {"start": date(int(year) + 1, 1, 1)},
     }
 
     print(f"\n## Expected:\n{expected}")
