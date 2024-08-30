@@ -9,7 +9,7 @@ test: lint
 lint: $(SCRIPT)
 	flake8 --max-line-length=200 --exit-zero $(SCRIPT) ./tests
 	pylint --max-line-length=200 --exit-zero $(SCRIPT) ./tests
-	black --check $(SCRIPT) ./tests
+	black --diff --check $(SCRIPT) ./tests
 
 black:
 	@black $(SCRIPT) ./tests
