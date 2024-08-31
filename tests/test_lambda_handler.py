@@ -36,6 +36,8 @@ class TestLambdaFunction(TestCase):
         """
         response = lambda_handler(event=None, context=None)
 
+        print(response)
+
         body = json.loads(response["body"])
 
         self.assertEqual(response.get("statusCode"), 200)
@@ -53,6 +55,7 @@ class TestLambdaFunction(TestCase):
         response = lambda_handler(event=None, context=None)
 
         print(response)
+
         body = json.loads(response["body"])
 
         self.assertEqual(response.get("statusCode"), 500)
