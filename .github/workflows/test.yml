@@ -5,6 +5,11 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  SLACK_AUTH_TOKEN: ${{ secrets.SLACK_AUTH_TOKEN }}
+  SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+  SLACK_CHANNEL_ID_TEST: ${{ secrets.SLACK_CHANNEL_ID_TEST }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
