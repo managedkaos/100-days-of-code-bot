@@ -1,8 +1,10 @@
 name: Python Linting
 
+
 on:
-  - push
-  - workflow_dispatch
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
