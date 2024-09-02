@@ -29,8 +29,6 @@ def test_random_days():
     """
     This test function simulates a few random days of running the main.py script, by calling the prepare_and_update_topic function
     """
-    results = []
-
     test_values = {
         date(2024, 4, 8): "2024-04-08 - Sprint 1: Day 99 (1 days remaining)",
         date(
