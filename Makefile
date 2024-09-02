@@ -9,13 +9,14 @@ test: lint
 lint: $(SCRIPT)
 	flake8 --max-line-length=200 --exit-zero $(SCRIPT) ./tests
 	pylint --max-line-length=200 --exit-zero $(SCRIPT) ./tests
+	ruff check --exit-zero $(SCRIPT) ./tests
 	black --diff --check $(SCRIPT) ./tests
 
 black:
 	@black $(SCRIPT) ./tests
 
 requirements:
-	pip3 install --upgrade pip pytest pylint flake8 black
+	pip3 install --upgrade pip pytest pylint flake8 ruff black
 	pip3 install --requirement requirements.txt
 
 .PHONY: all test lint black requirements
