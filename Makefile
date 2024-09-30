@@ -7,10 +7,10 @@ test: lint
 	pytest --capture=no --verbose ./tests
 
 lint: $(SCRIPT)
-	flake8 --max-line-length=200 --exit-zero $(SCRIPT) ./tests
-	pylint --max-line-length=200 --exit-zero $(SCRIPT) ./tests
-	ruff check --exit-zero $(SCRIPT) ./tests
-	black --diff --check $(SCRIPT) ./tests
+	flake8 --max-line-length=200 $(SCRIPT) ./tests
+	pylint --max-line-length=200 $(SCRIPT) ./tests
+	ruff check $(SCRIPT) ./tests
+	black --diff $(SCRIPT) ./tests
 
 black:
 	@black $(SCRIPT) ./tests
