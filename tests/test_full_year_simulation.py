@@ -1,5 +1,5 @@
 """
-This test script simulates a full year of running the main.py script, by calling the prepare_and_update_topic function
+Test functions for the main.py script
 """
 
 import os
@@ -9,11 +9,14 @@ from main import get_topic
 
 def test_full_year_simulation():
     """
-    This test function simulates a full year of running the main.py script, by calling the prepare_and_update_topic function
+    This test function simulates a full year of running the main.py script
+    by calling the prepare_and_update_topic function
     """
-    year = int(os.getenv("TEST_YEAR", "2024"))
+    year = int(os.getenv("TEST_YEAR", "2025"))
 
     results = []
+
+    print()
 
     for day in (date(year, 1, 1) + timedelta(n) for n in range(365)):
         topic = get_topic(day)
@@ -27,7 +30,8 @@ def test_full_year_simulation():
 
 def test_random_days():
     """
-    This test function simulates a few random days of running the main.py script, by calling the prepare_and_update_topic function
+    This test function simulates a few random days of running the main.py
+    script, by calling the prepare_and_update_topic function
     """
     test_values = {
         date(2024, 4, 8): "2024-04-08 - Sprint 1: Day 99 (1 days remaining)",
