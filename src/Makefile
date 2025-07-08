@@ -36,7 +36,7 @@ isort:
 	isort *.py
 
 test:
-	python -m unittest --verbose --failfast
+	pytest --capture=no --verbose ./tests
 
 clean:
 	@rm -rf ./__pycache__ ./tests/__pycache__ .ruff_cache .pytest_cache
