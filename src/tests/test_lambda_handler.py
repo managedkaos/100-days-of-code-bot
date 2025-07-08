@@ -2,10 +2,10 @@
 Test the lambda_handler function locally.
 """
 
-import os
 import json
-
+import os
 from unittest import TestCase
+
 from main import lambda_handler
 
 

@@ -2,9 +2,10 @@
 This script updates the topic of a Slack channel with the current sprint information.
 """
 
-from datetime import date, timedelta
-import os
 import json
+import os
+from datetime import date, timedelta
+
 import requests
 
 

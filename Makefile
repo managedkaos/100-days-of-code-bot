@@ -1,29 +1,23 @@
-SCRIPT = main.py
+TARGETS = help requirements lint fmt black isort test clean development-requirements
 
-all: lint test exec
+all:
+	$(MAKE) -C ./src all
 
-exec:
-	@python3 $(SCRIPT)
+$(TARGETS):
+	$(MAKE) -C ./src $@
 
-test:
-	pytest --capture=no --verbose ./tests
+pre-commit-install: development-requirements
+	pre-commit install
+	detect-secrets scan > .secrets.baseline
 
-lint: $(SCRIPT)
-	flake8 --max-line-length=200 $(SCRIPT) ./tests
-	pylint --max-line-length=200 $(SCRIPT) ./tests
-	ruff check $(SCRIPT) ./tests
-	black --diff $(SCRIPT) ./tests
+pre-commit-update: development-requirements
+	pre-commit autoupdate
+	$(MAKE) pre-commit-run
 
-black:
-	@black $(SCRIPT) ./tests
+pre-commit-run: development-requirements
+	pre-commit run --all-files
 
-requirements:
-	pip3 install --upgrade pip pytest pylint flake8 ruff black
-	pip3 install --requirement requirements.txt
+x_pre-commit-clean:
+	pre-commit uninstall
 
-clean:
-	-rm -rvf .pytest_cache __pycache__
-	-rm -rvf ./tests/.pytest_cache ./tests/__pycache__
-	-rm -rvf .ruff_cache
-
-.PHONY: all exec test lint black requirements clean
+.PHONY: help requirements lint fmt black isort test clean development-requirements pre-commit-install pre-commit-run pre-commit-clean

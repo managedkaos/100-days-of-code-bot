@@ -4,6 +4,7 @@ Test functions for the main.py script
 
 import os
 from datetime import date, timedelta
+
 from main import get_topic
 
 
