@@ -1,0 +1,60 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "100-days-of-code"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM"
+parameter_overrides = "SlackAuthToken='' SlackChannelId=''"
+image_repositories = []
+
+[default.build]
+[default.build.parameters]
+capabilities = "CAPABILITY_NAMED_IAM"
+use_container = false
+cached = true
+parallel = true
+
+[default.local_start_api]
+[default.local_start_api.parameters]
+warm_containers = "EAGER"
+
+[default.local_start_lambda]
+[default.local_start_lambda.parameters]
+warm_containers = "EAGER"
+
+# Development environment
+[development]
+[development.deploy]
+[development.deploy.parameters]
+stack_name = "one-hundred-days-of-code-development"
+region = "us-east-1"
+confirm_changeset = true
+parameter_overrides = "SlackChannelId=\"C1F05AY4U\" SlackApiUrl=\"https://slack.com/api/conversations.setTopic\""
+image_repositories = []
+resolve_s3 = true
+s3_prefix = "one-hundred-days-of-code-development"
+capabilities = "CAPABILITY_IAM"
+
+[development.build]
+[development.build.parameters]
+use_container = false
+cached = true
+parallel = true
+
+# Production environment
+[production]
+[production.deploy]
+[production.deploy.parameters]
+stack_name = "one-hundred-days-of-code-production"
+region = "us-east-1"
+confirm_changeset = true
+parameter_overrides = "SlackAuthToken='prod-token' SlackChannelId='prod-channel'"
+image_repositories = []
+
+[production.build]
+[production.build.parameters]
+use_container = false
+cached = true
+parallel = true

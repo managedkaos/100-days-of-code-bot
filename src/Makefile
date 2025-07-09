@@ -4,6 +4,8 @@ TAG = $(shell echo "$$(date +%F)-$$(git rev-parse --short HEAD)")
 help:
 	@echo "Run make <target> where target is one of the following..."
 	@echo
+	@echo "Development targets:"
+	@echo ""
 	@echo "  all                      - run requirements, lint, and test"
 	@echo "  requirements             - install runtime dependencies"
 	@echo "  development-requirements - install development dependencies"
