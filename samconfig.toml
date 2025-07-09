@@ -2,7 +2,6 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "100-days-of-code"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_NAMED_IAM"
