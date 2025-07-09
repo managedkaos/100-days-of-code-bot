@@ -1,6 +1,6 @@
 MAKEFLAGS += --no-print-directory
 ENV = development
-SLACK_TOKEN = None
+SLACK_AUTH_TOKEN = None
 SLACK_CHANNEL = None
 TARGETS = requirements lint fmt black isort test clean development-requirements
 
@@ -32,8 +32,8 @@ deploy-help:
 
 deploy-examples:
 	@echo "Deployment Examples:"
-	@echo "  make deploy-development SLACK_TOKEN=xoxb-your-token SLACK_CHANNEL=C1234567890"
-	@echo "  make deploy-production SLACK_TOKEN=xoxb-your-token SLACK_CHANNEL=C1234567890"
+	@echo "  make deploy-development SLACK_AUTH_TOKEN=xoxb-your-token SLACK_CHANNEL=C1234567890"
+	@echo "  make deploy-production SLACK_AUTH_TOKEN=xoxb-your-token SLACK_CHANNEL=C1234567890"
 	@echo "  make deploy-remove ENV=production"
 	@echo "  make deploy-outputs ENV=production"
 	@echo "  make deploy-logs ENV=production"
@@ -45,21 +45,11 @@ build:
 
 deploy-development:
 	@echo "Deploying to development environment..."
-	@if [ -z "$(SLACK_TOKEN)" ] || [ -z "$(SLACK_CHANNEL)" ]; then \
-		echo "Error: SLACK_TOKEN and SLACK_CHANNEL environment variables are required"; \
-		echo "Usage: make deploy-development SLACK_TOKEN=xoxb-your-token SLACK_CHANNEL=C1234567890"; \
-		exit 1; \
-	fi
-	@./scripts/deploy.sh deploy-development "$(SLACK_TOKEN)" "$(SLACK_CHANNEL_ID_TEST)"
+	@./scripts/deploy.sh deploy-development "$(SLACK_AUTH_TOKEN)" "$(SLACK_CHANNEL_ID_DEVELOPMENT)"
 
 deploy-production:
 	@echo "Deploying to production environment..."
-	@if [ -z "$(SLACK_TOKEN)" ] || [ -z "$(SLACK_CHANNEL)" ]; then \
-		echo "Error: SLACK_TOKEN and SLACK_CHANNEL environment variables are required"; \
-		echo "Usage: make deploy-production SLACK_TOKEN=xoxb-your-token SLACK_CHANNEL=C1234567890"; \
-		exit 1; \
-	fi
-	@./scripts/deploy.sh deploy-production "$(SLACK_TOKEN)" "$(SLACK_CHANNEL_ID_PRODUCTION)"
+	@./scripts/deploy.sh deploy-production "$(SLACK_AUTH_TOKEN)" "$(SLACK_CHANNEL_ID_PRODUCTION)"
 
 deploy-remove:
 	@echo "Deleting deployment..."

@@ -76,6 +76,7 @@ deploy() {
         --parameter-overrides \
         SlackAuthToken="$slack_token" \
         SlackChannelId="$slack_channel" \
+        --no-fail-on-empty-changeset \
         --no-confirm-changeset
 
     print_status "Deployment completed successfully"
@@ -113,7 +114,7 @@ remove() {
 outputs() {
     local environment=${1:-default}
     print_status "Getting stack outputs..."
-    sam list outputs --config-env $environment
+    sam list stack-outputs --config-env $environment
 }
 
 # Test the function locally

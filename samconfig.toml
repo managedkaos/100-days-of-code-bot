@@ -50,8 +50,11 @@ parallel = true
 stack_name = "one-hundred-days-of-code-production"
 region = "us-east-1"
 confirm_changeset = true
-parameter_overrides = "SlackAuthToken='prod-token' SlackChannelId='prod-channel'"
+parameter_overrides = "SlackChannelId=\"C8L2SN0SD\" SlackApiUrl=\"https://slack.com/api/conversations.setTopic\""
 image_repositories = []
+resolve_s3 = true
+s3_prefix = "one-hundred-days-of-code-production"
+capabilities = "CAPABILITY_IAM"
 
 [production.build]
 [production.build.parameters]

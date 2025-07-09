@@ -43,7 +43,7 @@ Resources:
                   - logs:PutLogEvents
                 Resource: "*"
 
-  SlackTopicUpdaterFunction:
+  LambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt LambdaExecutionRole.Arn
@@ -62,7 +62,7 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: cron(0 2 * * ? *)  # Run at 2 AM UTC daily
-            Name: DailySlackTopicUpdate
+            Name: !Sub "${AWS::StackName}-Schedule"
             Description: Update Slack channel topic with current sprint info
             Enabled: true
       Policies:
@@ -74,13 +74,13 @@ Resources:
   LambdaUrl:
     Type: AWS::Lambda::Url
     Properties:
-      TargetFunctionArn: !Ref SlackTopicUpdaterFunction
+      TargetFunctionArn: !Ref LambdaFunction
       AuthType: NONE
 
   LambdaUrlPermission:
     Type: AWS::Lambda::Permission
     Properties:
-      FunctionName: !Ref SlackTopicUpdaterFunction
+      FunctionName: !Ref LambdaFunction
       Principal: "*"
       Action: "lambda:InvokeFunctionUrl"
       FunctionUrlAuthType: NONE
@@ -99,7 +99,7 @@ Resources:
               - "lambda:GetFunctionConfiguration"
               - "lambda:UpdateFunctionConfiguration"
             Resource:
-              - !GetAtt SlackTopicUpdaterFunction.Arn
+              - !GetAtt LambdaFunction.Arn
             Effect: "Allow"
 
 Outputs:
@@ -111,7 +111,7 @@ Outputs:
 
   FunctionArn:
     Description: Lambda Function ARN
-    Value: !GetAtt SlackTopicUpdaterFunction.Arn
+    Value: !GetAtt LambdaFunction.Arn
     Export:
       Name: !Sub "${AWS::StackName}-FunctionArn"
 
