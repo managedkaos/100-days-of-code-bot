@@ -23,6 +23,10 @@ exec:
 development-requirements: requirements
 	pip install --quiet --upgrade --requirement development-requirements.txt
 
+requirements:
+	pip install --upgrade pip
+	pip install --quiet --upgrade --requirement requirements.txt
+
 lint:
 	flake8 --ignore=E501,E231 *.py
 	pylint --errors-only --disable=C0301 *.py
