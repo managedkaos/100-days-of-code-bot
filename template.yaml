@@ -61,7 +61,7 @@ Resources:
         DailySchedule:
           Type: Schedule
           Properties:
-            Schedule: cron(0 2 * * ? *)  # Run at 2 AM UTC daily
+            Schedule: cron(30 15 * * ? *)  # 8:30 AM PDT / 7:30 AM PST
             Name: !Sub "${AWS::StackName}-Schedule"
             Description: Update Slack channel topic with current sprint info
             Enabled: true
