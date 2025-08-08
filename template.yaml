@@ -1,0 +1,123 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Slack Channel Topic Updater Lambda Function
+  Updates Slack channel topic with current sprint information
+
+Parameters:
+  SlackAuthToken:
+    Type: String
+    Description: Slack authentication token
+    NoEcho: true
+
+  SlackChannelId:
+    Type: String
+    Description: Slack channel ID to update
+
+  SlackApiUrl:
+    Type: String
+    Description: Slack API URL for setting channel topic
+    Default: https://slack.com/api/conversations.setTopic
+
+Resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-LambdaExecutionRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaExecutionPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt LambdaExecutionRole.Arn
+      CodeUri: src/
+      Handler: main.lambda_handler
+      Runtime: python3.12
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          SLACK_AUTH_TOKEN: !Ref SlackAuthToken
+          SLACK_CHANNEL_ID: !Ref SlackChannelId
+          SLACK_API_URL: !Ref SlackApiUrl
+      Events:
+        DailySchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(30 15 * * ? *)  # 8:30 AM PDT / 7:30 AM PST
+            Name: !Sub "${AWS::StackName}-Schedule"
+            Description: Update Slack channel topic with current sprint info
+            Enabled: true
+      Policies:
+        - CloudWatchLogsFullAccess
+      Tags:
+        Application: SlackTopicUpdater
+        Environment: Production
+
+  LambdaUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      TargetFunctionArn: !Ref LambdaFunction
+      AuthType: NONE
+
+  LambdaUrlPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref LambdaFunction
+      Principal: "*"
+      Action: "lambda:InvokeFunctionUrl"
+      FunctionUrlAuthType: NONE
+
+  LambdaPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      Description: "Policy to manage the Lambda function."
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - "lambda:InvokeFunction"
+              - "lambda:UpdateFunctionCode"
+              - "lambda:GetFunctionConfiguration"
+              - "lambda:UpdateFunctionConfiguration"
+            Resource:
+              - !GetAtt LambdaFunction.Arn
+            Effect: "Allow"
+
+Outputs:
+  FunctionName:
+    Description: Lamnda Function Name
+    Value: !Sub ${AWS::StackName}
+    Export:
+      Name: !Sub "${AWS::StackName}-FunctionName"
+
+  FunctionArn:
+    Description: Lambda Function ARN
+    Value: !GetAtt LambdaFunction.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-FunctionArn"
+
+  FunctionUrl:
+    Description: Lambda Function URL
+    Value:
+      Fn::GetAtt: LambdaUrl.FunctionUrl
+    Export:
+      Name: !Sub "${AWS::StackName}-FunctionUrl"
