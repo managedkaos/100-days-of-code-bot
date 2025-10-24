@@ -114,7 +114,8 @@ remove() {
 outputs() {
     local environment=${1:-default}
     print_status "Getting stack outputs..."
-    sam list stack-outputs --config-env $environment
+    sam list stack-outputs --config-env $environment  \
+        --stack-name=one-hundred-days-of-code-$environment
 }
 
 # Test the function locally
@@ -129,7 +130,8 @@ test_local() {
 logs() {
     local environment=${1:-default}
     print_status "Showing function logs..."
-    sam logs --config-env $environment --tail
+    sam logs --config-env $environment --tail \
+        --stack-name=one-hundred-days-of-code-$environment
 }
 
 # Show help
