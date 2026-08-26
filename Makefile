@@ -8,6 +8,15 @@ help: ## Display available targets
 all: ## Run all source targets (lint, test, etc)
 	$(MAKE) -C ./src all
 
+requirements: ## Install Python requirements
+lint: ## Run linter checks
+fmt: ## Format source code
+black: ## Run black formatter
+isort: ## Sort import statements
+test: ## Run the test suite
+clean: ## Remove build artifacts
+development-requirements: ## Install development dependencies
+
 $(TARGETS):
 	$(MAKE) -C ./src $@
 
@@ -108,4 +117,4 @@ x_remove-deployment:
 	fi
 	./scripts/deploy.sh remove "$(ENV)"
 
-.PHONY: help all build deploy-test-local deploy-development deploy-production deploy-examples get-outputs get-logs pre-commit-install pre-commit-update pre-commit-run get-stacks get-urls get-url call-url doit
+.PHONY: help all $(TARGETS) build deploy-test-local deploy-development deploy-production deploy-examples get-outputs get-logs pre-commit-install pre-commit-update pre-commit-run get-stacks get-urls get-url call-url doit
